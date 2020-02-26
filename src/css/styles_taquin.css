@@ -74,6 +74,9 @@ input, select {
 	border-radius: 6px;
 	color:darkslategray;
 	height:3em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 #message>p {
 	margin: 10px 3px;
