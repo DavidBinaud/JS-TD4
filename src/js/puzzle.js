@@ -4,9 +4,9 @@ class Puzzle{
 		this.listeCase = new Array();
 		for (var i = 0; i < 16; i++) {
 			let case1 = new Case(i);
+			case1.img.onclick = function(){puzzle.echanger(this);};
 			this.listeCase.push(case1);
 		}
-		this.coups = 0;
 		this.theme = "nombres";
 		this.melanger();
 	}
@@ -41,6 +41,7 @@ class Puzzle{
 	}
 
 	melanger(){
+		this.coups = 0;
 		this.listeCase.sort(() => Math.random() - 0.5);
 		for (var i = 0; i < this.listeCase.length; i++) {
 			this.listeCase[i].changeNumber(i);
@@ -69,7 +70,10 @@ class Puzzle{
 
 	hasWon(){
 		let divmes = document.getElementById("message");
-		if (calcul_bien_place() === 16) {
+		if (this.calcul_bien_place() === 16) {
+			for (var i = 0; i < this.listeCase.length; i++) {
+				this.listeCase[i].disableCursor();
+			}
 			divmes.innerHTML = "bravo, puzzle résolu en " + this.coups + (this.coups > 1? " coups." : " coup");
 		}
 	}
@@ -111,6 +115,55 @@ class Puzzle{
 
 
 		console.log(blank);	
+	}
+
+
+	echanger(item){
+		//on recupere le nombre dans la source
+		let number = parseInt(item.src.split(this.theme + "_")[1].split(".jpg")[0]);
+		
+		//on trouve l'element Case de la liste qui correspond au nombre cliqué
+		let casecliquee = this.listeCase.find(element => element.number === number);
+
+		//s'il est deplaçable
+		if(casecliquee.isMovable()){
+			//on recupera la case blanche et on effectue l'echange
+			let caseblanche = this.listeCase.find(element => element.number === 15);
+			caseblanche.changeNumber(number);
+			caseblanche.setSrc(this.theme);
+
+			casecliquee.changeNumber(15);
+			casecliquee.setSrc(this.theme);
+
+			//on update les curseurs autour de la case dite blanche
+			this.updateCursors();
+
+			//on incremente le nb coup joué
+			this.coups++;
+
+			//on met a jour l'affichage
+			this.maj_affichage();
+
+			//on verifie que la partie ne soit pas finie
+			this.hasWon();
+		}
+	}
+
+
+	//méthode de test de fin de partie qui met le taquin dans un etat fini - 1 coup
+	setToFinal(){
+		//on met chaque élément à sa place
+		for (var i = 0; i < this.listeCase.length; i++) {
+			this.listeCase[i].changeNumber(i);
+			this.listeCase[i].setSrc(this.theme);
+		}
+		//on échange deux cases de la fin
+		this.listeCase[14].changeNumber(15);
+		this.listeCase[14].setSrc(this.theme);
+
+		this.listeCase[15].changeNumber(14);
+		this.listeCase[15].setSrc(this.theme);
+		this.updateCursors();
 	}
 
 

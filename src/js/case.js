@@ -4,6 +4,9 @@ class Case{
 		this.id = id;
 		this.img = document.getElementById("photo" + id);
 		this.number = id;
+		this.img.onclick = function(){
+			puzzle.echanger(this);
+		}
 		this.disableCursor();
 	}
 
@@ -18,16 +21,18 @@ class Case{
 	enableCursor(){
 		this.img.style.cursor = "pointer";
 		this.img.style.filter = "brightness(1.2)";
-		let a = this;
-		this.img.onclick = function(){
-			console.log(this.src);
-		}
+		this.img.style.tran
+		this.canMove = true;
 	}
 
 	disableCursor(){
 		this.img.style.cursor = "not-allowed";
 		this.img.style.filter = "brightness(1)";
-		this.img.onclick = "";
+		this.canMove = false;
+	}
+
+	isMovable(){
+		return this.canMove === true;
 	}
 
 }
