@@ -75,6 +75,7 @@ class Puzzle{
 				this.listeCase[i].disableCursor();
 			}
 			divmes.innerHTML = "bravo, puzzle résolu en " + this.coups + (this.coups > 1? " coups." : " coup");
+			this.listeCase[15].img.src = "img/" + this.theme + "/" + this.theme + "_.jpg";
 		}
 	}
 
@@ -121,31 +122,32 @@ class Puzzle{
 	echanger(item){
 		//on recupere le nombre dans la source
 		let number = parseInt(item.src.split(this.theme + "_")[1].split(".jpg")[0]);
-		
-		//on trouve l'element Case de la liste qui correspond au nombre cliqué
-		let casecliquee = this.listeCase.find(element => element.number === number);
+		if(!isNaN(number)){
+			//on trouve l'element Case de la liste qui correspond au nombre cliqué
+			let casecliquee = this.listeCase.find(element => element.number === number);
 
-		//s'il est deplaçable
-		if(casecliquee.isMovable()){
-			//on recupera la case blanche et on effectue l'echange
-			let caseblanche = this.listeCase.find(element => element.number === 15);
-			caseblanche.changeNumber(number);
-			caseblanche.setSrc(this.theme);
+			//s'il est deplaçable
+			if(casecliquee.isMovable()){
+				//on recupera la case blanche et on effectue l'echange
+				let caseblanche = this.listeCase.find(element => element.number === 15);
+				caseblanche.changeNumber(number);
+				caseblanche.setSrc(this.theme);
 
-			casecliquee.changeNumber(15);
-			casecliquee.setSrc(this.theme);
+				casecliquee.changeNumber(15);
+				casecliquee.setSrc(this.theme);
 
-			//on update les curseurs autour de la case dite blanche
-			this.updateCursors();
+				//on update les curseurs autour de la case dite blanche
+				this.updateCursors();
 
-			//on incremente le nb coup joué
-			this.coups++;
+				//on incremente le nb coup joué
+				this.coups++;
 
-			//on met a jour l'affichage
-			this.maj_affichage();
+				//on met a jour l'affichage
+				this.maj_affichage();
 
-			//on verifie que la partie ne soit pas finie
-			this.hasWon();
+				//on verifie que la partie ne soit pas finie
+				this.hasWon();
+			}
 		}
 	}
 
