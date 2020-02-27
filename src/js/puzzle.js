@@ -75,7 +75,8 @@ class Puzzle{
 				this.listeCase[i].disableCursor();
 			}
 			divmes.innerHTML = "bravo, puzzle résolu en " + this.coups + (this.coups > 1? " coups." : " coup");
-			this.listeCase[15].img.src = "img/" + this.theme + "/" + this.theme + "_.jpg";
+			this.listeCase[15].changeNumber("");
+			this.listeCase[15].setSrc(this.theme);
 		}
 	}
 
@@ -113,9 +114,6 @@ class Puzzle{
 		if(blank + 4 < 16){
 			this.listeCase[blank + 4].enableCursor();
 		}
-
-
-		console.log(blank);	
 	}
 
 
